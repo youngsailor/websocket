@@ -2,12 +2,12 @@ package impl
 
 import (
 	"context"
-	"fmt"
-	"github.com/bwmarrin/snowflake"
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/youngsailor/websocket/config"
 	"github.com/youngsailor/websocket/iface"
 )
+
+var workerID uint64
 
 type MsgHandler struct {
 	Apis           map[string]iface.IRouter //存放每个bizType 所对应的处理方法的map属性
@@ -45,16 +45,25 @@ func (mh *MsgHandler) SendMsgToTaskQueue(request iface.IRequest) (err error) {
 	//根据ConnID来分配当前的连接应该由哪个worker负责处理
 	//轮询的平均分配法则
 
-	//得到需要处理此条连接的workerID
-	sessionIdValue, exists := request.GetSession().Get("session_id")
-	if !exists {
-		return fmt.Errorf("session_id not exists")
+	//分发方法一：得到需要处理此条连接的workerID
+	//sessionIdValue, exists := request.GetSession().Get("session_id")
+	//if !exists {
+	//	return fmt.Errorf("session_id not exists")
+	//}
+	//sessionId, ok := sessionIdValue.(snowflake.ID)
+	//if !ok {
+	//	return fmt.Errorf("session_id type error")
+	//}
+	//workerID := uint64(sessionId.Int64()) % mh.WorkerPoolSize
+
+	///分发方法二：根据时间戳来分配
+	//workerID := uint64(time.Now().UnixMilli()) % mh.WorkerPoolSize
+
+	//分发方法三：轮询
+	workerID++
+	if workerID == mh.WorkerPoolSize {
+		workerID = 0
 	}
-	sessionId, ok := sessionIdValue.(snowflake.ID)
-	if !ok {
-		return fmt.Errorf("session_id type error")
-	}
-	workerID := uint64(sessionId.Int64()) % mh.WorkerPoolSize
 
 	//fmt.Println("Add ConnID=", request.GetSession().GetConnID()," request bizType=", request.GetBizType(), "to workerID=", workerID)
 	//将请求消息发送给任务队列

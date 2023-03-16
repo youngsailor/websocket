@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/gogf/gf/v2 v2.2.5
-	github.com/olahol/melody v1.1.1
+	github.com/olahol/melody v1.1.2
 	github.com/spf13/viper v1.14.0
 )
 
