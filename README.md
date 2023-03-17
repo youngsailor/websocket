@@ -1,6 +1,6 @@
 # websocket
 a small go websocket library with business router
-一个封装的包含业务路由的go websocket库。
+一个封装的包含业务路由的go websocket库，内置多协程处理和超时控制。
 
 使用案例：https://github.com/youngsailor/websocket-example
 
