@@ -13,6 +13,7 @@ type Conf struct {
 	WorkerPoolSize uint64 `mapstructure:"worker_pool_size"`
 	MaxWorkTaskLen uint32 `mapstructure:"max_work_task_len"`
 	MaxConn        int    `mapstructure:"max_conn"` //待定
+	Timeout        int    `mapstructure:"timeout"`
 }
 
 var WsConf Conf

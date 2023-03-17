@@ -1,0 +1,7 @@
+ip = "127.0.0.1"
+port = 5050
+heartbeat_time = 10
+worker_pool_size = 10
+max_work_task_len = 5000
+max_conn = 1000
+timeout = 60

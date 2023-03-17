@@ -5,6 +5,7 @@ import (
 	"github.com/gogf/gf/v2/frame/g"
 	"github.com/youngsailor/websocket/config"
 	"github.com/youngsailor/websocket/iface"
+	"time"
 )
 
 var workerID uint64
@@ -79,6 +80,10 @@ func (mh *MsgHandler) SendMsgToTaskQueue(request iface.IRequest) (err error) {
 
 // DoMsgHandler 马上以非阻塞方式处理消息
 func (mh *MsgHandler) DoMsgHandler(ctx context.Context, request iface.IRequest) {
+	time.AfterFunc(time.Duration(config.WsConf.Timeout)*time.Second, func() {
+		g.Log().Error(ctx, "request bizType=", request.GetBizType(), "timeout")
+		return
+	})
 	handler, ok := mh.Apis[request.GetBizType()]
 	if !ok {
 		g.Log().Error(ctx, "api biz_type = ", request.GetBizType(), " is not FOUND!")
