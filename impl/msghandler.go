@@ -80,6 +80,11 @@ func (mh *MsgHandler) SendMsgToTaskQueue(request iface.IRequest) (err error) {
 
 // DoMsgHandler 马上以非阻塞方式处理消息
 func (mh *MsgHandler) DoMsgHandler(ctx context.Context, request iface.IRequest) {
+	defer func() {
+	if r := recover(); r != nil {
+		g.Log().Errorf(ctx, "request_data = %s", request.GetData(), ", panic = ", r)
+	}
+	}()
 	time.AfterFunc(time.Duration(config.WsConf.Timeout)*time.Second, func() {
 		g.Log().Error(ctx, "request bizType=", request.GetBizType(), "timeout")
 		return
