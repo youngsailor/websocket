@@ -58,7 +58,7 @@ func (mh *MsgHandler) SendMsgToTaskQueue(request iface.IRequest) (err error) {
 	//workerID := uint64(sessionId.Int64()) % mh.WorkerPoolSize
 
 	///分发方法二：根据时间戳来分配
-	//workerID := uint64(time.Now().UnixMilli()) % mh.WorkerPoolSize
+	//workerID := uint64(time.Now().UnixMicro()) % mh.WorkerPoolSize
 
 	//分发方法三：轮询
 	workerID++
